@@ -6,6 +6,12 @@
 
 A KMP template of an App implementing [Basic-Ads](https://github.com/LexiLabs-App/basic) with Compose multiplatform.
 
+## Enable all four types of ads as Composables:
+* Banner Ads
+* Interstitial Ads
+* Rewarded Ads
+* Rewarded Interstitial Ads __(beta)__
+
 <img src="screenshots.png" width="720">
 
 ## Dependencies
