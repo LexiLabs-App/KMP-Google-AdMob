@@ -1,10 +1,10 @@
-# Compose Ads KMP
+# Kotlin Multiplatform AdMob
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-7f52ff.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 ![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
 ![badge-iOS](http://img.shields.io/badge/platform-iOS-6ED88D.svg?style=flat)
 
-A KMP template of an App implementing [Basic-Ads](https://github.com/LexiLabs-App/basic) with Compose multiplatform.
+A Kotlin Multiplatform template for apps implementing [Basic-Ads](https://github.com/LexiLabs-App/basic) with Compose for Multiplatform.
 
 ## Composable Types:
 * Banner Ads
