@@ -1,14 +1,14 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Compose Ads KMP
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-7f52ff.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
+![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
+![badge-iOS](http://img.shields.io/badge/platform-iOS-6ED88D.svg?style=flat)
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+A KMP template of an App implementing [Basic-Ads](https://github.com/LexiLabs-App/basic) with Compose multiplatform.
 
+<img src="screenshots.png" width="720">
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## Dependencies
+- 🧩 [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform); for shared UI
+- ♨️ [LexiLabs Basic-Ads](https://basic.lexilabs.app); for porting AdMob into KMP composables
+- 💰 [Google AdMob](https://admob.google.com); for Google AdMob functionality
