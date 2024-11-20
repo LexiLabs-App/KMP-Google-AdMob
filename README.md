@@ -6,7 +6,7 @@
 
 A Kotlin Multiplatform template for apps implementing [Basic-Ads](https://github.com/LexiLabs-App/basic) with Compose for Multiplatform.
 
-<img src="ad.png" width="720">
+<img src="./ad.png" width="720">
 
 ## Composable Types:
 * Banner Ads
