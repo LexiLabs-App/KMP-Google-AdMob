@@ -6,7 +6,7 @@
 
 A Kotlin Multiplatform template for apps implementing [Basic-Ads](https://github.com/LexiLabs-App/basic-ads) with Compose for Multiplatform. This approach follows the [how-to guide for composable Ads](https://medium.com/@robert.jamison/composable-ads-f8795924aa0d) and the [context factory](https://medium.com/@robert.jamison/passing-android-context-in-kmp-jetpack-compose-8de5b5de7bdd) techniques by [Robert Jamison](https://medium.com/@robert.jamison).
 
-<img src="./ad.png" width="720">
+<img src="./ad.png" alt="KMP AdMob Advert" width="720">
 
 ## Composable Types:
 * Banner Ads
@@ -14,7 +14,7 @@ A Kotlin Multiplatform template for apps implementing [Basic-Ads](https://github
 * Rewarded Ads
 * Rewarded Interstitial Ads __(beta)__
 
-<img src="screenshots.png" width="720">
+<img src="screenshots.png" alt="KMP AdMob Screenshots" width="720">
 
 ## Dependencies
 - 🧩 [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform); for shared UI

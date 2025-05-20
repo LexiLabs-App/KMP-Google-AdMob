@@ -13,15 +13,18 @@ import androidx.compose.ui.Modifier
 import app.lexilabs.basic.ads.*
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(DependsOnGoogleMobileAds::class)
+@OptIn(DependsOnGoogleMobileAds::class, ExperimentalBasicAds::class)
 @Composable
 @Preview
 fun App(platformContext: ContextFactory) {
     MaterialTheme {
+        val viewModel = remember { AdsViewModel(platformContext) }
+        val userConsented by viewModel.userConsented.collectAsState()
+        val enableRewardedButton by viewModel.enableRewardedAd.collectAsState()
+        val enableInterstitialButton by viewModel.enableInterstitialAd.collectAsState()
+        val enableRewardedInterstitialButton by viewModel.enableRewardedInterstitialAd.collectAsState()
+
         var showBanner by remember { mutableStateOf(false) }
-        var showInterstitial by remember { mutableStateOf(false) }
-        var showRewarded by remember { mutableStateOf(false) }
-        var showRewardedInterstitial by remember { mutableStateOf(false) }
         var rewardCount by remember { mutableStateOf(0) }
 
         Surface(
@@ -35,31 +38,26 @@ fun App(platformContext: ContextFactory) {
             ) {
                 Button(
                     onClick = { showBanner = !showBanner },
-                ) {
-                    Text(
-                        if (showBanner) {
-                            "Hide Banner Ads"
-                        } else {
-                            "Show Banner Ads"
-                        }
-                    )
-                }
+                ) { Text(if (showBanner) { "Hide Banner Ads" } else { "Show Banner Ads" }) }
 
                 Button(
-                    onClick = { showInterstitial = true },
+                    onClick = { viewModel.showInterstitialAd() },
+                    enabled = enableInterstitialButton
                 ) { Text("Show Interstitial Ad") }
 
                 Text("Reward Count: $rewardCount")
                 Button(
-                    onClick = { showRewarded = true },
+                    onClick = { viewModel.showRewardedAd { rewardCount += 1 } },
+                    enabled = enableRewardedButton
                 ) { Text("Show Rewarded Ad") }
 
                 Button(
-                    onClick = { showRewardedInterstitial = true },
+                    onClick = { viewModel.showRewardedInterstitialAd{ rewardCount += 1 } },
+                    enabled = enableRewardedInterstitialButton
                 ) { Text("Show Rewarded Interstitial Ads") }
             }
 
-            if (showBanner) {
+            if (showBanner && userConsented) {
                 Column(
                     verticalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxSize()
@@ -67,25 +65,6 @@ fun App(platformContext: ContextFactory) {
                     BannerAd()
                     BannerAd()
                 }
-            }
-            if (showInterstitial) {
-                InterstitialAd(
-                    platformContext.getActivity(),
-                    onDismissed = { showInterstitial = false })
-            }
-            if (showRewarded) {
-                RewardedAd(
-                    platformContext.getActivity(),
-                    onDismissed = { showRewarded = false },
-                    onRewardEarned = { rewardCount += 1 }
-                )
-            }
-            if (showRewardedInterstitial) {
-                RewardedInterstitialAd(
-                    platformContext.getActivity(),
-                    onDismissed = { showRewardedInterstitial = false },
-                    onRewardEarned = { rewardCount += 1 }
-                )
             }
         }
     }

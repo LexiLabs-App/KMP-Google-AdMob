@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,7 +9,6 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -18,7 +16,6 @@ kotlin {
 
     // Disregards expect/actual warnings
     // https://youtrack.jetbrains.com/issue/KT-61573
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
@@ -50,6 +47,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.lexilabs.basic.ads)
+            implementation(libs.lexilabs.basic.logging)
             implementation(libs.google.ads)
         }
     }
@@ -63,8 +61,8 @@ android {
         applicationId = "app.lexilabs.example.basic.ads"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = libs.versions.project.version.code.get().toInt()
+        versionName = libs.versions.project.version.name.get()
     }
     packaging {
         resources {
