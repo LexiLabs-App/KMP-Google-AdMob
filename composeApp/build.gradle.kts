@@ -36,6 +36,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.google.ads)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -48,7 +49,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.lexilabs.basic.ads)
             implementation(libs.lexilabs.basic.logging)
-            implementation(libs.google.ads)
         }
     }
 }
