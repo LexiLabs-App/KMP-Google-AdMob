@@ -20,3 +20,4 @@ A Kotlin Multiplatform template for apps implementing [Basic-Ads](https://github
 - 🧩 [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform); for shared UI
 - ♨️ [LexiLabs Basic-Ads](https://ads.basic.lexilabs.app); for porting AdMob into KMP composables
 - 💰 [Google AdMob](https://admob.google.com); for Google AdMob functionality
+- 💬 [Google User Messaging Platform](https://support.google.com/admob/answer/10113005?hl=en) for Consent Popups and privacy policy compliance

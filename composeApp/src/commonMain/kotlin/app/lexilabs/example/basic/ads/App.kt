@@ -11,21 +11,44 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import app.lexilabs.basic.ads.*
+import app.lexilabs.basic.ads.composable.BannerAd
+import app.lexilabs.basic.ads.composable.ConsentPopup
+import app.lexilabs.basic.ads.composable.InterstitialAd
+import app.lexilabs.basic.ads.composable.RewardedAd
+import app.lexilabs.basic.ads.composable.RewardedInterstitialAd
+import app.lexilabs.basic.ads.composable.rememberConsent
+import app.lexilabs.basic.ads.composable.rememberInterstitialAd
+import app.lexilabs.basic.ads.composable.rememberRewardedAd
+import app.lexilabs.basic.ads.composable.rememberRewardedInterstitialAd
+import app.lexilabs.basic.logging.Log
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(DependsOnGoogleMobileAds::class, ExperimentalBasicAds::class)
+@OptIn(DependsOnGoogleMobileAds::class, DependsOnGoogleUserMessagingPlatform::class, ExperimentalBasicAds::class)
 @Composable
 @Preview
 fun App(platformContext: ContextFactory) {
     MaterialTheme {
-        val viewModel = remember { AdsViewModel(platformContext) }
-        val userConsented by viewModel.userConsented.collectAsState()
-        val enableRewardedButton by viewModel.enableRewardedAd.collectAsState()
-        val enableInterstitialButton by viewModel.enableInterstitialAd.collectAsState()
-        val enableRewardedInterstitialButton by viewModel.enableRewardedInterstitialAd.collectAsState()
 
-        var showBanner by remember { mutableStateOf(false) }
+        // remember Ads and their States
+        val consent by rememberConsent(activity = platformContext.getActivity())
+        val rewardedAd by rememberRewardedAd(activity = platformContext.getActivity())
+        val interstitialAd by rememberInterstitialAd(activity = platformContext.getActivity())
+        val rewardedInterstitialAd by rememberRewardedInterstitialAd(activity = platformContext.getActivity())
+
+        // remember when to show Ads
+        var showBannerAds by remember { mutableStateOf(false) }
+        var showInterstitialAd by remember { mutableStateOf(false) }
+        var showRewardedAd by remember { mutableStateOf(false) }
+        var showRewardedInterstitialAd by remember { mutableStateOf(false) }
+
+        // remember Reward state
         var rewardCount by remember { mutableStateOf(0) }
+
+        // Try to show a consent popup
+        ConsentPopup(
+            consent = consent,
+            onFailure = { Log.e("App", "failure:${it.message}")}
+        )
 
         Surface(
             modifier = Modifier
@@ -37,27 +60,27 @@ fun App(platformContext: ContextFactory) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { showBanner = !showBanner },
-                ) { Text(if (showBanner) { "Hide Banner Ads" } else { "Show Banner Ads" }) }
+                    onClick = { showBannerAds = !showBannerAds },
+                ) { Text(if (showBannerAds) { "Hide Banner Ads" } else { "Show Banner Ads" }) }
 
                 Button(
-                    onClick = { viewModel.showInterstitialAd() },
-                    enabled = enableInterstitialButton
+                    onClick = { showInterstitialAd = true },
+                    enabled = interstitialAd.state == AdState.READY
                 ) { Text("Show Interstitial Ad") }
 
                 Text("Reward Count: $rewardCount")
                 Button(
-                    onClick = { viewModel.showRewardedAd { rewardCount += 1 } },
-                    enabled = enableRewardedButton
+                    onClick = { showRewardedAd = true },
+                    enabled = rewardedAd.state == AdState.READY
                 ) { Text("Show Rewarded Ad") }
 
                 Button(
-                    onClick = { viewModel.showRewardedInterstitialAd{ rewardCount += 1 } },
-                    enabled = enableRewardedInterstitialButton
+                    onClick = { showRewardedInterstitialAd = true },
+                    enabled = rewardedInterstitialAd.state == AdState.READY
                 ) { Text("Show Rewarded Interstitial Ads") }
             }
 
-            if (showBanner && userConsented) {
+            if (showBannerAds && consent.canRequestAds) {
                 Column(
                     verticalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxSize()
@@ -65,6 +88,26 @@ fun App(platformContext: ContextFactory) {
                     BannerAd()
                     BannerAd()
                 }
+            }
+            if (showInterstitialAd && consent.canRequestAds) {
+                InterstitialAd(
+                    interstitialAd,
+                    onDismissed = { showInterstitialAd = false }
+                )
+            }
+            if (showRewardedAd && consent.canRequestAds){
+                RewardedAd(
+                    rewardedAd,
+                    onDismissed = { showRewardedAd = false},
+                    onRewardEarned = { rewardCount += 1}
+                )
+            }
+            if (showRewardedInterstitialAd && consent.canRequestAds){
+                RewardedInterstitialAd(
+                    rewardedInterstitialAd,
+                    onDismissed = { showRewardedInterstitialAd = false },
+                    onRewardEarned = { rewardCount += 1 }
+                )
             }
         }
     }
