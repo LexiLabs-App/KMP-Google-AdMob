@@ -16,6 +16,7 @@ import app.lexilabs.basic.ads.composable.ConsentPopup
 import app.lexilabs.basic.ads.composable.InterstitialAd
 import app.lexilabs.basic.ads.composable.RewardedAd
 import app.lexilabs.basic.ads.composable.RewardedInterstitialAd
+import app.lexilabs.basic.ads.composable.rememberBannerAd
 import app.lexilabs.basic.ads.composable.rememberConsent
 import app.lexilabs.basic.ads.composable.rememberInterstitialAd
 import app.lexilabs.basic.ads.composable.rememberRewardedAd
@@ -31,12 +32,23 @@ fun App(platformContext: ContextFactory) {
 
         // remember Ads and their States
         val consent by rememberConsent(activity = platformContext.getActivity())
+        val topBannerAd by rememberBannerAd(activity = platformContext.getActivity())
+        val bottomBannerAd by rememberBannerAd(activity = platformContext.getActivity())
         val rewardedAd by rememberRewardedAd(activity = platformContext.getActivity())
         val interstitialAd by rememberInterstitialAd(activity = platformContext.getActivity())
         val rewardedInterstitialAd by rememberRewardedInterstitialAd(activity = platformContext.getActivity())
 
         // remember when to show Ads
         var showBannerAds by remember { mutableStateOf(false) }
+        val bannerEnabled = when (topBannerAd.state) {
+            AdState.NONE,
+            AdState.LOADING,
+            AdState.FAILING -> { false }
+            AdState.READY,
+            AdState.SHOWING,
+            AdState.SHOWN,
+            AdState.DISMISSED -> { true }
+        }
         var showInterstitialAd by remember { mutableStateOf(false) }
         var showRewardedAd by remember { mutableStateOf(false) }
         var showRewardedInterstitialAd by remember { mutableStateOf(false) }
@@ -59,9 +71,19 @@ fun App(platformContext: ContextFactory) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 Button(
                     onClick = { showBannerAds = !showBannerAds },
-                ) { Text(if (showBannerAds) { "Hide Banner Ads" } else { "Show Banner Ads" }) }
+                    enabled = bannerEnabled
+                ) {
+                    Text(
+                        if (showBannerAds && bannerEnabled) {
+                            "Hide Banner Ads"
+                        } else {
+                            "Show Banner Ads"
+                        }
+                    )
+                }
 
                 Button(
                     onClick = { showInterstitialAd = true },
@@ -85,8 +107,8 @@ fun App(platformContext: ContextFactory) {
                     verticalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BannerAd()
-                    BannerAd()
+                    BannerAd(topBannerAd)
+                    BannerAd(bottomBannerAd)
                 }
             }
             if (showInterstitialAd && consent.canRequestAds) {
