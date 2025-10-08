@@ -24,7 +24,7 @@ import app.lexilabs.basic.ads.composable.rememberRewardedInterstitialAd
 import app.lexilabs.basic.logging.Log
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(DependsOnGoogleMobileAds::class, DependsOnGoogleUserMessagingPlatform::class, ExperimentalBasicAds::class)
+@OptIn(DependsOnGoogleMobileAds::class, DependsOnGoogleUserMessagingPlatform::class)
 @Composable
 @Preview
 fun App(platformContext: ContextFactory) {
