@@ -6,19 +6,30 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import app.lexilabs.basic.ads.*
+import app.lexilabs.basic.ads.AdState
+import app.lexilabs.basic.ads.DependsOnGoogleMobileAds
+import app.lexilabs.basic.ads.DependsOnGoogleUserMessagingPlatform
 import app.lexilabs.basic.ads.composable.BannerAd
 import app.lexilabs.basic.ads.composable.ConsentPopup
 import app.lexilabs.basic.ads.composable.InterstitialAd
+import app.lexilabs.basic.ads.composable.NativeAd
 import app.lexilabs.basic.ads.composable.RewardedAd
 import app.lexilabs.basic.ads.composable.RewardedInterstitialAd
 import app.lexilabs.basic.ads.composable.rememberBannerAd
 import app.lexilabs.basic.ads.composable.rememberConsent
 import app.lexilabs.basic.ads.composable.rememberInterstitialAd
+import app.lexilabs.basic.ads.composable.rememberNativeAd
 import app.lexilabs.basic.ads.composable.rememberRewardedAd
 import app.lexilabs.basic.ads.composable.rememberRewardedInterstitialAd
 import app.lexilabs.basic.logging.Log
@@ -37,6 +48,7 @@ fun App(platformContext: ContextFactory) {
         val rewardedAd by rememberRewardedAd(activity = platformContext.getActivity())
         val interstitialAd by rememberInterstitialAd(activity = platformContext.getActivity())
         val rewardedInterstitialAd by rememberRewardedInterstitialAd(activity = platformContext.getActivity())
+        val nativeAd by rememberNativeAd(activity = platformContext.getActivity())
 
         // remember when to show Ads
         var showBannerAds by remember { mutableStateOf(false) }
@@ -52,6 +64,7 @@ fun App(platformContext: ContextFactory) {
         var showInterstitialAd by remember { mutableStateOf(false) }
         var showRewardedAd by remember { mutableStateOf(false) }
         var showRewardedInterstitialAd by remember { mutableStateOf(false) }
+        var showNativeAd by remember { mutableStateOf(false) }
 
         // remember Reward state
         var rewardCount by remember { mutableStateOf(0) }
@@ -99,7 +112,12 @@ fun App(platformContext: ContextFactory) {
                 Button(
                     onClick = { showRewardedInterstitialAd = true },
                     enabled = rewardedInterstitialAd.state == AdState.READY
-                ) { Text("Show Rewarded Interstitial Ads") }
+                ) { Text("Show Rewarded Interstitial Ad") }
+
+                Button(
+                    onClick = { showNativeAd = true },
+                    enabled = nativeAd.state == AdState.READY
+                ) { Text("Show Native Ad") }
             }
 
             if (showBannerAds && consent.canRequestAds) {
@@ -129,6 +147,11 @@ fun App(platformContext: ContextFactory) {
                     rewardedInterstitialAd,
                     onDismissed = { showRewardedInterstitialAd = false },
                     onRewardEarned = { rewardCount += 1 }
+                )
+            }
+            if(showNativeAd && consent.canRequestAds) {
+                NativeAd(
+                    loadedAd = nativeAd,
                 )
             }
         }
