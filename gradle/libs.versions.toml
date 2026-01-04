@@ -5,15 +5,16 @@ project-version-code = "1"
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
-kotlin = "2.2.21"
-agp = "8.13.1"
+kotlin = "2.3.0"
+agp = "8.13.2"
 # DEPENDENCIES
-androidx-activityCompose = "1.12.0"
+androidx-activityCompose = "1.12.2"
 androidx-lifecycle = "2.9.6"
 compose-multiplatform = "1.9.3"
 lexilabs-basic-ads = "+"
 lexilabs-basic-logging = "+"
 google-ads = "+"
+google-ump = "+"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -22,6 +23,7 @@ androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle
 lexilabs-basic-ads = { group = "app.lexilabs.basic", name = "basic-ads", version.ref = "lexilabs-basic-ads" }
 lexilabs-basic-logging = { group = "app.lexilabs.basic", name = "basic-logging", version.ref = "lexilabs-basic-logging"}
 google-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "google-ads" }
+google-ump = { module = "com.google.android.ump:user-messaging-platform", version.ref = "google-ump"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
