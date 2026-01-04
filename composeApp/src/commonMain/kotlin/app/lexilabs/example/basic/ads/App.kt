@@ -1,6 +1,8 @@
 package app.lexilabs.example.basic.ads
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import app.lexilabs.basic.ads.AdState
 import app.lexilabs.basic.ads.DependsOnGoogleMobileAds
 import app.lexilabs.basic.ads.DependsOnGoogleUserMessagingPlatform
@@ -65,6 +68,7 @@ fun App(platformContext: ContextFactory) {
         var showRewardedAd by remember { mutableStateOf(false) }
         var showRewardedInterstitialAd by remember { mutableStateOf(false) }
         var showNativeAd by remember { mutableStateOf(false) }
+        var showPrivacyOptions by remember { mutableStateOf(false) }
 
         // remember Reward state
         var rewardCount by remember { mutableStateOf(0) }
@@ -118,6 +122,10 @@ fun App(platformContext: ContextFactory) {
                     onClick = { showNativeAd = true },
                     enabled = nativeAd.state == AdState.READY
                 ) { Text("Show Native Ad") }
+
+                Button(
+                    onClick = { showPrivacyOptions = true },
+                ) { Text("Show Privacy Options") }
             }
 
             if (showBannerAds && consent.canRequestAds) {
@@ -150,8 +158,21 @@ fun App(platformContext: ContextFactory) {
                 )
             }
             if(showNativeAd && consent.canRequestAds) {
-                NativeAd(
-                    loadedAd = nativeAd,
+                Box(
+                    modifier = Modifier.fillMaxSize().background(Color.White)
+                ){
+                    NativeAd(
+                        loadedAd = nativeAd,
+                    )
+                    /** THIS IS A FAST BUT IMPROPER IMPLEMENTATION OF AD DISMISSAL **/
+                    Button(
+                        onClick = { showNativeAd = false },
+                    ) { Text("Hide Ad") }
+                }
+            }
+            if(showPrivacyOptions) {
+                consent.showPrivacyOptionsForm(
+                    onDismissed = {showPrivacyOptions = false},
                 )
             }
         }
