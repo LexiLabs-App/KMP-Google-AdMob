@@ -1,3 +1,5 @@
+@file:Suppress("AssignedValueIsNeverRead")
+
 package app.lexilabs.example.basic.ads
 
 import androidx.compose.foundation.background
@@ -41,17 +43,17 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(DependsOnGoogleMobileAds::class, DependsOnGoogleUserMessagingPlatform::class)
 @Composable
 @Preview
-fun App(platformContext: ContextFactory) {
+fun App() {
     MaterialTheme {
 
         // remember Ads and their States
-        val consent by rememberConsent(activity = platformContext.getActivity())
-        val topBannerAd by rememberBannerAd(activity = platformContext.getActivity())
-        val bottomBannerAd by rememberBannerAd(activity = platformContext.getActivity())
-        val rewardedAd by rememberRewardedAd(activity = platformContext.getActivity())
-        val interstitialAd by rememberInterstitialAd(activity = platformContext.getActivity())
-        val rewardedInterstitialAd by rememberRewardedInterstitialAd(activity = platformContext.getActivity())
-        val nativeAd by rememberNativeAd(activity = platformContext.getActivity())
+        val consent by rememberConsent()
+        val topBannerAd by rememberBannerAd()
+        val bottomBannerAd by rememberBannerAd()
+        val rewardedAd by rememberRewardedAd()
+        val interstitialAd by rememberInterstitialAd()
+        val rewardedInterstitialAd by rememberRewardedInterstitialAd()
+        val nativeAd by rememberNativeAd()
 
         // remember when to show Ads
         var showBannerAds by remember { mutableStateOf(false) }
