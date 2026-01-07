@@ -75,10 +75,9 @@ fun App() {
         // remember Reward state
         var rewardCount by remember { mutableStateOf(0) }
 
-        // Try to show a consent popup
         ConsentPopup(
             consent = consent,
-            onFailure = { Log.e("App", "failure:${it.message}")}
+            onFailure = { Log.e("consent", "failure:${it.message}")},
         )
 
         Surface(
@@ -126,50 +125,62 @@ fun App() {
                 ) { Text("Show Native Ad") }
 
                 Button(
+                    onClick = { consent.reset() },
+                ){ Text("Reset Consent Form") }
+
+                Button(
                     onClick = { showPrivacyOptions = true },
                 ) { Text("Show Privacy Options") }
-            }
 
-            if (showBannerAds && consent.canRequestAds) {
-                Column(
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    BannerAd(topBannerAd)
-                    BannerAd(bottomBannerAd)
+                if (!consent.canRequestAds) {
+                    Text(
+                        text = "Ads cannot be displayed without consent.",
+                        color = Color.Red
+                    )
                 }
             }
-            if (showInterstitialAd && consent.canRequestAds) {
-                InterstitialAd(
-                    interstitialAd,
-                    onDismissed = { showInterstitialAd = false }
-                )
-            }
-            if (showRewardedAd && consent.canRequestAds){
-                RewardedAd(
-                    rewardedAd,
-                    onDismissed = { showRewardedAd = false},
-                    onRewardEarned = { rewardCount += 1}
-                )
-            }
-            if (showRewardedInterstitialAd && consent.canRequestAds){
-                RewardedInterstitialAd(
-                    rewardedInterstitialAd,
-                    onDismissed = { showRewardedInterstitialAd = false },
-                    onRewardEarned = { rewardCount += 1 }
-                )
-            }
-            if(showNativeAd && consent.canRequestAds) {
-                Box(
-                    modifier = Modifier.fillMaxSize().background(Color.White)
-                ){
-                    NativeAd(
-                        loadedAd = nativeAd,
+            if (consent.canRequestAds) {
+                if (showBannerAds) {
+                    Column(
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        BannerAd(topBannerAd)
+                        BannerAd(bottomBannerAd)
+                    }
+                }
+                if (showInterstitialAd) {
+                    InterstitialAd(
+                        interstitialAd,
+                        onDismissed = { showInterstitialAd = false }
                     )
-                    /** THIS IS A FAST BUT IMPROPER IMPLEMENTATION OF AD DISMISSAL **/
-                    Button(
-                        onClick = { showNativeAd = false },
-                    ) { Text("Hide Ad") }
+                }
+                if (showRewardedAd) {
+                    RewardedAd(
+                        rewardedAd,
+                        onDismissed = { showRewardedAd = false },
+                        onRewardEarned = { rewardCount += 1 }
+                    )
+                }
+                if (showRewardedInterstitialAd) {
+                    RewardedInterstitialAd(
+                        rewardedInterstitialAd,
+                        onDismissed = { showRewardedInterstitialAd = false },
+                        onRewardEarned = { rewardCount += 1 }
+                    )
+                }
+                if (showNativeAd) {
+                    Box(
+                        modifier = Modifier.fillMaxSize().background(Color.White)
+                    ) {
+                        NativeAd(
+                            loadedAd = nativeAd,
+                        )
+                        /** THIS IS A FAST BUT IMPROPER IMPLEMENTATION OF AD DISMISSAL **/
+                        Button(
+                            onClick = { showNativeAd = false },
+                        ) { Text("Hide Ad") }
+                    }
                 }
             }
             if(showPrivacyOptions) {
