@@ -7,6 +7,45 @@ plugins {
     alias(libs.plugins.composeCompiler)
 }
 
+/** REMEDIATION **/
+dependencies {
+    /** This patches all transitive dependencies that have vulnerabilities **/
+    constraints {
+        implementation(libs.remediate.okhttp) {
+            version { strictly(libs.versions.remediate.okhttp.get()) }
+            because("CVE-2021-0341")
+        }
+        implementation(libs.remediate.bitbucket) {
+            version { strictly(libs.versions.remediate.bitbucket.get())}
+            because("CVE-2024-29371")
+        }
+        implementation(libs.remediate.netty.codec.http){
+            version { strictly(libs.versions.remediate.netty.get())}
+            because("CVE-2025-67735")
+        }
+        implementation(libs.remediate.netty.codec.http2){
+            version { strictly(libs.versions.remediate.netty.get())}
+            because("CVE-2025-55163")
+        }
+        implementation(libs.remediate.google.protobuf.kotlin){
+            version { strictly(libs.versions.remediate.google.protobuf.get())}
+            because("CVE-2024-7254")
+        }
+        implementation(libs.remediate.google.protobuf.java){
+            version { strictly(libs.versions.remediate.google.protobuf.get())}
+            because("CVE-2024-7254")
+        }
+        implementation(libs.remediate.jdom){
+            version { strictly(libs.versions.remediate.jdom.get())}
+            because("CVE-2021-33813")
+        }
+        implementation(libs.remediate.apache.compress){
+            version { strictly(libs.versions.remediate.apache.compress.get())}
+            because("CVE-2024-26308")
+        }
+    }
+}
+
 kotlin {
     androidTarget {
         compilerOptions {
