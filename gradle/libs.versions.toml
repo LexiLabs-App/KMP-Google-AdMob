@@ -2,11 +2,11 @@
 # BUILD VERSIONS
 project-version-name = "1.0"
 project-version-code = "1"
-android-compileSdk = "36"
+android-compileSdk = "37"
 android-minSdk = "24"
-android-targetSdk = "36"
+android-targetSdk = "37"
 kotlin = "2.3.0"
-agp = "8.13.2"
+agp = "9.0.1"
 # DEPENDENCIES
 androidx-activityCompose = "1.12.2"
 androidx-lifecycle = "2.9.6"
