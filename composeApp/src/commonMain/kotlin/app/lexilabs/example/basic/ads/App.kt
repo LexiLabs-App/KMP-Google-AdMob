@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import app.lexilabs.basic.ads.AdState
 import app.lexilabs.basic.ads.DependsOnGoogleMobileAds
 import app.lexilabs.basic.ads.DependsOnGoogleUserMessagingPlatform
@@ -38,7 +39,6 @@ import app.lexilabs.basic.ads.composable.rememberNativeAd
 import app.lexilabs.basic.ads.composable.rememberRewardedAd
 import app.lexilabs.basic.ads.composable.rememberRewardedInterstitialAd
 import app.lexilabs.basic.logging.Log
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(DependsOnGoogleMobileAds::class, DependsOnGoogleUserMessagingPlatform::class)
 @Composable
