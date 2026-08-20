@@ -50,7 +50,7 @@ kotlin {
             enable = true
         }
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+            jvmTarget.set(JvmTarget.JVM_26)
         }
         @Suppress("UnstableApiUsage")
         optimization {
